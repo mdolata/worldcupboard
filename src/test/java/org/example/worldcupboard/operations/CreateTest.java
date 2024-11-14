@@ -42,21 +42,29 @@ public class CreateTest {
     }
 
     @Test
-    void shouldNotAddNewGameWhenAlreadyExists() {
+    void shouldNotAddNewGameWhenAlreadyExistsAndReturnsTheExistingGameId() {
         // given
         var teamHome = new Team("home");
         var teamAway = new Team("away");
 
         GameId gameId = new GameId(UUID.randomUUID());
-        when(gameIdGenerator.generate()).thenReturn(gameId);
+        GameId unusedGameId = new GameId(UUID.randomUUID());
+        when(gameIdGenerator.generate()).thenReturn(gameId)
+                .thenReturn(unusedGameId);
 
         // when
         commandService.add(teamHome, teamAway);
+
+        // and
+        when(store.verifyGameExists(teamHome, teamAway)).thenReturn(gameId);
+
+        // when
         var result = commandService.add(teamHome, teamAway);
 
         // then
         verify(store).add(gameId, new Event(CREATE, teamHome, timeProvider.now()));
         verify(store).add(gameId, new Event(CREATE, teamAway, timeProvider.now()));
+        verify(store, times(2)).verifyGameExists(teamHome, teamAway);
         verifyNoMoreInteractions(store);
 
         CreateResult expected = new CreateResult(false, gameId);
@@ -69,16 +77,19 @@ public class CreateTest {
         var teamHome1 = new Team("home1");
         var teamAway1 = new Team("away1");
 
-        var teamHome2 = new Team("home2");
-        var teamAway2 = new Team("away2");
-
         GameId gameId1 = new GameId(UUID.randomUUID());
         GameId gameId2 = new GameId(UUID.randomUUID());
-        when(gameIdGenerator.generate()).thenReturn(gameId1);
-        when(gameIdGenerator.generate()).thenReturn(gameId2);
+        when(gameIdGenerator.generate()).thenReturn(gameId1)
+                .thenReturn(gameId2);
 
         // when
         commandService.add(teamHome1, teamAway1);
+
+        // and
+        var teamHome2 = new Team("home2");
+        var teamAway2 = new Team("away2");
+
+        // when
         var result = commandService.add(teamHome2, teamAway2);
 
         // then
@@ -97,16 +108,19 @@ public class CreateTest {
         var teamHome1 = new Team("home");
         var teamAway1 = new Team("away");
 
-        var teamHome2 = new Team("away");
-        var teamAway2 = new Team("home");
-
         GameId gameId1 = new GameId(UUID.randomUUID());
         GameId gameId2 = new GameId(UUID.randomUUID());
-        when(gameIdGenerator.generate()).thenReturn(gameId1);
-        when(gameIdGenerator.generate()).thenReturn(gameId2);
+        when(gameIdGenerator.generate()).thenReturn(gameId1)
+                .thenReturn(gameId2);
 
         // when
         commandService.add(teamHome1, teamAway1);
+
+        // and
+        var teamHome2 = new Team("away");
+        var teamAway2 = new Team("home");
+
+        // when
         var result = commandService.add(teamHome2, teamAway2);
 
         // then
@@ -115,7 +129,7 @@ public class CreateTest {
         verify(store).add(gameId2, new Event(CREATE, teamHome2, timeProvider.now()));
         verify(store).add(gameId2, new Event(CREATE, teamAway2, timeProvider.now()));
 
-        CreateResult expected = new CreateResult(true, new GameId(UUID.randomUUID()));
+        CreateResult expected = new CreateResult(true, gameId2);
         assertThat(result).isEqualTo(expected);
     }
 }

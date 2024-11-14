@@ -16,6 +16,20 @@ public class CommandService {
     }
 
     public CreateResult add(Team home, Team away) {
-        return null;
+        var existingGameId = store.verifyGameExists(home, away);
+        if (existingGameId != null) {
+            return new CreateResult(false, existingGameId);
+        }
+
+        var gameId = gameIdGenerator.generate();
+        var time = timeProvider.now();
+
+        var eventForHomeTeam = new Event(EventType.CREATE, home, time);
+        var eventForAwayTeam = new Event(EventType.CREATE, away, time);
+        store.add(gameId, eventForHomeTeam);
+        store.add(gameId, eventForAwayTeam);
+
+        return new CreateResult(true, gameId);
     }
+
 }

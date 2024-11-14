@@ -1,6 +1,7 @@
 package org.example.worldcupboard.internal;
 
 import org.example.worldcupboard.api.model.GameId;
+import org.example.worldcupboard.api.model.Team;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,4 +18,7 @@ public class Store {
     }
 
 
+    public GameId verifyGameExists(Team home, Team away) {
+        return null;
+    }
 }
