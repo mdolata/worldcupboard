@@ -35,6 +35,7 @@ This is a simple library to collect and return data about sport event.
 # Possible errors by operation
 ## Create a game
  - a game already exists
+   - library returns false as result and gameId of the exists game
 
 ## Finish a game
  - a game already finished
