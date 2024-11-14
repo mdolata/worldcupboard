@@ -1,7 +1,10 @@
-package org.example.worldcupboard.internal;
+package org.example.worldcupboard.internal.commands;
 
 import org.example.worldcupboard.api.model.Team;
 import org.example.worldcupboard.api.model.results.CreateResult;
+import org.example.worldcupboard.internal.store.Event;
+import org.example.worldcupboard.internal.store.EventType;
+import org.example.worldcupboard.internal.store.Store;
 
 public class CommandService {
 

@@ -1,15 +1,16 @@
-package org.example.worldcupboard.operations;
+package org.example.worldcupboard.internal.commands;
 
 import org.example.worldcupboard.api.model.GameId;
 import org.example.worldcupboard.api.model.Team;
 import org.example.worldcupboard.api.model.results.CreateResult;
-import org.example.worldcupboard.internal.*;
-import org.example.worldcupboard.operations.util.TestTimeProvider;
+import org.example.worldcupboard.internal.store.Event;
+import org.example.worldcupboard.internal.store.Store;
+import org.example.worldcupboard.internal.commands.util.TestTimeProvider;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.example.worldcupboard.internal.EventType.CREATE;
+import static org.example.worldcupboard.internal.store.EventType.CREATE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 

@@ -1,4 +1,4 @@
-package org.example.worldcupboard.internal;
+package org.example.worldcupboard.internal.store;
 
 import org.example.worldcupboard.api.model.Team;
 

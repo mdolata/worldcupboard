@@ -1,6 +1,6 @@
-package org.example.worldcupboard.operations.util;
+package org.example.worldcupboard.internal.commands.util;
 
-import org.example.worldcupboard.internal.TimeProvider;
+import org.example.worldcupboard.internal.commands.TimeProvider;
 
 import java.time.Instant;
 

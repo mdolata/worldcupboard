@@ -1,4 +1,4 @@
-package org.example.worldcupboard.internal;
+package org.example.worldcupboard.internal.commands;
 
 import java.time.Instant;
 
