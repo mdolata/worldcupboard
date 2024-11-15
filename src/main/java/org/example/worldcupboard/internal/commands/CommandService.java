@@ -5,6 +5,8 @@ import org.example.worldcupboard.api.model.Team;
 import org.example.worldcupboard.api.model.results.CreateResult;
 import org.example.worldcupboard.api.model.results.FinishResult;
 import org.example.worldcupboard.api.model.results.UpdateResult;
+import org.example.worldcupboard.internal.queries.EventReducer;
+import org.example.worldcupboard.internal.queries.QueryService;
 import org.example.worldcupboard.internal.store.Event;
 import org.example.worldcupboard.internal.store.EventType;
 import org.example.worldcupboard.internal.store.Store;
@@ -51,6 +53,14 @@ public class CommandService {
     }
 
     public FinishResult finish(GameId gameId) {
-        return null;
+        var existingGameId = store.verifyGameExists(gameId);
+        if (existingGameId == null) {
+            return new FinishResult(false, gameId, null);
+        }
+
+        List<Event> events = store.remove(gameId);
+        var finalScore = EventReducer.calculateScore(gameId, events);
+
+        return new FinishResult(true, gameId, finalScore);
     }
 }

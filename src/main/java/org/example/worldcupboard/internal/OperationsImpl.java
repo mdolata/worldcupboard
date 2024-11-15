@@ -27,7 +27,7 @@ public class OperationsImpl implements Operations {
 
     @Override
     public FinishResult finishGame(GameId gameId) {
-        return null;
+        return commandService.finish(gameId);
     }
 
     @Override

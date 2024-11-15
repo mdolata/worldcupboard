@@ -6,7 +6,6 @@ import org.example.worldcupboard.api.model.GameId;
 import org.example.worldcupboard.api.model.Score;
 import org.example.worldcupboard.api.model.Team;
 import org.example.worldcupboard.api.model.results.FinishResult;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -54,7 +53,6 @@ public class ComponentTest {
         assertGameScore(gameId, teamA, 1, teamB, 1);
     }
 
-    @Disabled
     @Test
     void shouldCreateGameAndShowOnScoreBoardAndFinish() {
         // given
@@ -76,7 +74,6 @@ public class ComponentTest {
 
     }
 
-    @Disabled
     @Test
     void shouldCreateGameAndUpdateScoreAndShowOnScoreBoardAndFinish() {
         // given
