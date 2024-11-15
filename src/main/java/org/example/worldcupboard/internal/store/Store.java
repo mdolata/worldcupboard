@@ -47,4 +47,8 @@ public class Store {
         return store; // it's not safe
     }
 
+    public List<Event> remove(GameId gameId) {
+        return store.remove(gameId);
+    }
+
 }

@@ -3,6 +3,7 @@ package org.example.worldcupboard.internal.commands;
 import org.example.worldcupboard.api.model.GameId;
 import org.example.worldcupboard.api.model.Team;
 import org.example.worldcupboard.api.model.results.CreateResult;
+import org.example.worldcupboard.api.model.results.FinishResult;
 import org.example.worldcupboard.api.model.results.UpdateResult;
 import org.example.worldcupboard.internal.store.Event;
 import org.example.worldcupboard.internal.store.EventType;
@@ -49,4 +50,7 @@ public class CommandService {
         return new UpdateResult(true);
     }
 
+    public FinishResult finish(GameId gameId) {
+        return null;
+    }
 }
