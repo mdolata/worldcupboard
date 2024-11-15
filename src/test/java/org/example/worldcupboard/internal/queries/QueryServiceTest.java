@@ -55,7 +55,7 @@ class QueryServiceTest {
         Summary summary = queryService.getSummary();
 
         // then
-        assertThat(summary.summaryList()).containsExactly(new Score(gameId, teamA, 0, teamB, 0));
+        assertThat(summary.summaryList()).containsExactly(new Score(gameId, instant, teamA, 0, teamB, 0));
     }
 
     @Test
@@ -79,7 +79,7 @@ class QueryServiceTest {
         Summary summary = queryService.getSummary();
 
         // then
-        assertThat(summary.summaryList()).containsExactly(new Score(gameId, teamA, 2, teamB, 1));
+        assertThat(summary.summaryList()).containsExactly(new Score(gameId, instant, teamA, 2, teamB, 1));
     }
 
     @Test
@@ -94,11 +94,12 @@ class QueryServiceTest {
         GameId gameId3 = new GameId(UUID.randomUUID());
         Team teamX = new Team("teamX");
         Team teamZ = new Team("teamZ");
+        Instant game2StartTime = instant.plus(1L, ChronoUnit.MINUTES);
         when(store.getAll()).thenReturn(Map.of(
                         gameId1,
                         List.of(Event.createEvent(List.of(teamA, teamB), instant)),
                         gameId2,
-                        List.of(Event.createEvent(List.of(teamC, teamD), instant.plus(1L, ChronoUnit.MINUTES)),
+                        List.of(Event.createEvent(List.of(teamC, teamD), game2StartTime),
                                 Event.updateEvent(teamC, instant),
                                 Event.updateEvent(teamC, instant)),
                         gameId3,
@@ -112,9 +113,9 @@ class QueryServiceTest {
 
         // then
         assertThat(summary.summaryList()).containsExactly(
-                new Score(gameId2, teamC, 2, teamD, 1),
-                new Score(gameId3, teamX, 0, teamZ, 1),
-                new Score(gameId1, teamA, 0, teamB, 0)
+                new Score(gameId2, game2StartTime, teamC, 2, teamD, 0),
+                new Score(gameId3, instant, teamX, 0, teamZ, 1),
+                new Score(gameId1, instant, teamA, 0, teamB, 0)
         );
     }
 
@@ -131,15 +132,17 @@ class QueryServiceTest {
         GameId gameId3 = new GameId(UUID.randomUUID());
         Team teamX = new Team("teamX");
         Team teamZ = new Team("teamZ");
+        Instant game2StartTime = instant.plus(5L, ChronoUnit.MINUTES);
+        Instant game3StartTime = instant.plus(1L, ChronoUnit.MINUTES);
         when(store.getAll()).thenReturn(Map.of(
                         gameId1,
                         List.of(Event.createEvent(List.of(teamA, teamB), instant),
                                 Event.updateEvent(teamA, instant)),
                         gameId2,
-                        List.of(Event.createEvent(List.of(teamC, teamD), instant.plus(5L, ChronoUnit.MINUTES)),
+                        List.of(Event.createEvent(List.of(teamC, teamD), game2StartTime),
                                 Event.updateEvent(teamC, instant)),
                         gameId3,
-                        List.of(Event.createEvent(List.of(teamX, teamZ), instant.plus(1L, ChronoUnit.MINUTES)),
+                        List.of(Event.createEvent(List.of(teamX, teamZ), game3StartTime),
                                 Event.updateEvent(teamX, instant))
                 )
         );
@@ -149,9 +152,9 @@ class QueryServiceTest {
 
         // then
         assertThat(summary.summaryList()).containsExactly(
-                new Score(gameId2, teamC, 1, teamD, 0),
-                new Score(gameId3, teamX, 1, teamZ, 0),
-                new Score(gameId1, teamA, 1, teamB, 0)
+                new Score(gameId2, game2StartTime, teamC, 1, teamD, 0),
+                new Score(gameId3, game3StartTime, teamX, 1, teamZ, 0),
+                new Score(gameId1, instant, teamA, 1, teamB, 0)
         );
     }
 }

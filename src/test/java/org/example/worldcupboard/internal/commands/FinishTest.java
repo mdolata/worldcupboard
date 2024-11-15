@@ -40,7 +40,7 @@ public class FinishTest {
         verify(store).verifyGameExists(gameId);
         verify(store).remove(gameId);
 
-        FinishResult expected = new FinishResult(true, gameId, new Score(gameId, teamHome, 0, teamAway, 0));
+        FinishResult expected = new FinishResult(true, gameId, new Score(gameId, instant, teamHome, 0, teamAway, 0));
         assertThat(result).isEqualTo(expected);
     }
 
@@ -83,7 +83,7 @@ public class FinishTest {
         verify(store).verifyGameExists(gameId);
         verify(store).remove(gameId);
 
-        FinishResult expected = new FinishResult(true, gameId, new Score(gameId, teamHome, 2, teamAway, 0));
+        FinishResult expected = new FinishResult(true, gameId, new Score(gameId, instant, teamHome, 2, teamAway, 0));
         assertThat(result).isEqualTo(expected);
     }
 

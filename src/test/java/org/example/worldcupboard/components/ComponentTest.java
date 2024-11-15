@@ -98,10 +98,14 @@ public class ComponentTest {
 
     private void assertGameScore(GameId gameId, Team teamA, int teamAScore, Team teamB, int teamBScore) {
         assertThat(getScore(gameId).get())
-                .isEqualTo(
-                        new Score(gameId,
-                                teamA, teamAScore,
-                                teamB, teamBScore)
+                .extracting(
+                        Score::gameId,
+                        Score::home,
+                        Score::away,
+                        Score::homeTeamScore,
+                        Score::awayTeamScore)
+                .containsExactly(
+                        gameId, teamA, teamB, teamAScore, teamBScore
                 );
     }
 
