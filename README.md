@@ -12,24 +12,23 @@ This is a simple library to collect and return data about sport event.
      - home team 
      - away team
    - returns
-     - game id?
+     - result of the operation (boolean)
+     - game id
  - finish a game
    - receives
-     - game id?
+     - game id
    - returns
-     - result of the operation (boolean/enum)
+     - result of the operation (boolean)
      - final score
  - add event
    - receives
-     - game id?
-     - home team score
-     - away team score
+     - game id
+     - team that scores
    - returns
-     - result of the operation (boolean/enum)
+     - result of the operation (boolean)
  - get summary
    - returns
-     - game id?
-     - list of games
+     - list of matches with scores
      - order by total score then by creation time
 
 # Possible errors by operation
@@ -55,3 +54,4 @@ This is a simple library to collect and return data about sport event.
 6. I decided to use UUID as game ids because it's a standard. Simpler version could be a simple string concatenation of team's names.
 7. I intentionally don't put logs, as it's supposed to be a simple library
 8. Assumed that updating not existing match is an error. But it's easy to change to initialize match if needed.
+9. The scenario when client updating a game with wrong team name is not handled, to decide how to manage it

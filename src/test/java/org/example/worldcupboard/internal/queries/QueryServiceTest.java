@@ -6,7 +6,6 @@ import org.example.worldcupboard.api.model.Team;
 import org.example.worldcupboard.api.model.results.Summary;
 import org.example.worldcupboard.internal.store.Event;
 import org.example.worldcupboard.internal.store.Store;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
