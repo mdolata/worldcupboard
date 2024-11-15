@@ -6,6 +6,8 @@ import org.example.worldcupboard.internal.store.Event;
 import org.example.worldcupboard.internal.store.EventType;
 import org.example.worldcupboard.internal.store.Store;
 
+import java.util.List;
+
 public class CommandService {
 
     private final Store store;
@@ -27,9 +29,8 @@ public class CommandService {
         var gameId = gameIdGenerator.generate();
         var time = timeProvider.now();
 
-        var eventForHomeTeam = new Event(EventType.CREATE, home, time);
-        var eventForAwayTeam = new Event(EventType.CREATE, away, time);
-        store.add(gameId, eventForHomeTeam, eventForAwayTeam);
+        var creationEvent = new Event(EventType.CREATE, List.of(home, away), time);
+        store.add(gameId, creationEvent);
 
         return new CreateResult(true, gameId);
     }

@@ -26,7 +26,7 @@ class StoreTest {
     void shouldAddEvent(EventType eventType) {
         // given
         var gameId = new GameId(UUID.randomUUID());
-        var event = new Event(eventType, new Team("team"), instant);
+        var event = new Event(eventType, List.of(new Team("team")), instant);
 
         // when
         var result = store.add(gameId, event);
@@ -40,7 +40,7 @@ class StoreTest {
     void shouldAddAnotherEventForTheGame() {
         // given
         var gameId = new GameId(UUID.randomUUID());
-        var event = new Event(CREATE, new Team("team"), instant);
+        var event = new Event(CREATE, List.of(new Team("team")), instant);
 
         // when
         var result1 = store.add(gameId, event);
@@ -64,9 +64,8 @@ class StoreTest {
         Team home = new Team("home");
         Team away = new Team("away");
 
-        var event1 = new Event(CREATE, home, instant);
-        var event2 = new Event(CREATE, away, instant);
-        store.add(gameId, event1, event2);
+        var event1 = new Event(CREATE, List.of(home, away), instant);
+        db.put(gameId, List.of(event1));
 
         // when
         var result = store.verifyGameExists(home, away);
@@ -82,9 +81,8 @@ class StoreTest {
         Team home = new Team("home");
         Team away = new Team("away");
 
-        var event1 = new Event(CREATE, home, instant);
-        var event2 = new Event(CREATE, away, instant);
-        store.add(gameId, event1, event2);
+        var event1 = new Event(CREATE, List.of(home, away), instant);
+        db.put(gameId, List.of(event1));
 
         // when
         var result = store.verifyGameExists(new Team("anotherHome"), new Team("anotherAway"));
@@ -100,9 +98,8 @@ class StoreTest {
         Team home = new Team("home");
         Team away = new Team("away");
 
-        var event1 = new Event(CREATE, home, instant);
-        var event2 = new Event(CREATE, away, instant);
-        store.add(gameId, event1, event2);
+        var event1 = new Event(CREATE, List.of(home, away), instant);
+        db.put(gameId, List.of(event1));
 
         // when
         var result = store.verifyGameExists(new Team("anotherHome"), away);
@@ -118,9 +115,8 @@ class StoreTest {
         Team home = new Team("home");
         Team away = new Team("away");
 
-        var event1 = new Event(CREATE, home, instant);
-        var event2 = new Event(CREATE, away, instant);
-        store.add(gameId, event1, event2);
+        var event1 = new Event(CREATE, List.of(home, away), instant);
+        db.put(gameId, List.of(event1));
 
         // when
         var result = store.verifyGameExists(home, new Team("anotherAway"));
@@ -136,9 +132,8 @@ class StoreTest {
         Team home = new Team("home");
         Team away = new Team("away");
 
-        var event1 = new Event(CREATE, home, instant);
-        var event2 = new Event(CREATE, away, instant);
-        store.add(gameId, event1, event2);
+        var event1 = new Event(CREATE, List.of(home, away), instant);
+        db.put(gameId, List.of(event1));
 
         // when
         var result = store.verifyGameExists(away, home);

@@ -8,6 +8,7 @@ import org.example.worldcupboard.internal.store.Store;
 import org.example.worldcupboard.internal.commands.util.TestTimeProvider;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.example.worldcupboard.internal.store.EventType.CREATE;
@@ -35,8 +36,7 @@ public class CreateTest {
         var result = commandService.add(teamHome, teamAway);
 
         // then
-        verify(store).add(gameId, new Event(CREATE, teamHome, timeProvider.now()));
-        verify(store).add(gameId, new Event(CREATE, teamAway, timeProvider.now()));
+        verify(store).add(gameId, new Event(CREATE, List.of(teamHome, teamAway), timeProvider.now()));
 
         CreateResult expected = new CreateResult(true, gameId);
         assertThat(result).isEqualTo(expected);
@@ -63,8 +63,7 @@ public class CreateTest {
         var result = commandService.add(teamHome, teamAway);
 
         // then
-        verify(store).add(gameId, new Event(CREATE, teamHome, timeProvider.now()));
-        verify(store).add(gameId, new Event(CREATE, teamAway, timeProvider.now()));
+        verify(store).add(gameId, new Event(CREATE, List.of(teamHome, teamAway), timeProvider.now()));
         verify(store, times(2)).verifyGameExists(teamHome, teamAway);
         verifyNoMoreInteractions(store);
 
@@ -94,10 +93,8 @@ public class CreateTest {
         var result = commandService.add(teamHome2, teamAway2);
 
         // then
-        verify(store).add(gameId1, new Event(CREATE, teamHome1, timeProvider.now()));
-        verify(store).add(gameId1, new Event(CREATE, teamAway1, timeProvider.now()));
-        verify(store).add(gameId2, new Event(CREATE, teamHome2, timeProvider.now()));
-        verify(store).add(gameId2, new Event(CREATE, teamAway2, timeProvider.now()));
+        verify(store).add(gameId1, new Event(CREATE, List.of(teamHome1, teamAway1), timeProvider.now()));
+        verify(store).add(gameId2, new Event(CREATE, List.of(teamHome2, teamAway2), timeProvider.now()));
 
         CreateResult expected = new CreateResult(true, gameId2);
         assertThat(result).isEqualTo(expected);
@@ -125,10 +122,8 @@ public class CreateTest {
         var result = commandService.add(teamHome2, teamAway2);
 
         // then
-        verify(store).add(gameId1, new Event(CREATE, teamHome1, timeProvider.now()));
-        verify(store).add(gameId1, new Event(CREATE, teamAway1, timeProvider.now()));
-        verify(store).add(gameId2, new Event(CREATE, teamHome2, timeProvider.now()));
-        verify(store).add(gameId2, new Event(CREATE, teamAway2, timeProvider.now()));
+        verify(store).add(gameId1, new Event(CREATE, List.of(teamHome1, teamAway1), timeProvider.now()));
+        verify(store).add(gameId2, new Event(CREATE, List.of(teamHome2, teamAway2), timeProvider.now()));
 
         CreateResult expected = new CreateResult(true, gameId2);
         assertThat(result).isEqualTo(expected);

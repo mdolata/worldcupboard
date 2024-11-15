@@ -8,23 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.example.worldcupboard.internal.store.EventType.CREATE;
-
 public class Store {
     private final HashMap<GameId, List<Event>> store;
-    private final HashMap<String, GameId> mapping;
 
     public Store(HashMap<GameId, List<Event>> store) {
         this.store = store;
-        mapping = new HashMap<>();
-    }
-
-    // hack for calculation of the existing pairs -> should be refactored
-    public boolean add(GameId gameId, Event event1, Event event2) {
-        mapping.put(event1.teamInvolved() + "" + event2.teamInvolved(), gameId);
-        add(gameId, event1);
-        add(gameId, event2);
-        return true;
     }
 
     public boolean add(GameId gameId, Event event) {
@@ -34,8 +22,20 @@ public class Store {
         return true;
     }
 
-
     public GameId verifyGameExists(Team home, Team away) {
-        return mapping.get(home + "" + away);
+        for (Map.Entry<GameId, List<Event>> entry : store.entrySet()) {
+            GameId gameId = entry.getKey();
+            List<Event> events = entry.getValue();
+            long count = events.stream()
+                    .filter(e -> e.eventTyp().equals(EventType.CREATE))
+                    .filter(e -> e.teamsInvolved().getFirst() == home && e.teamsInvolved().getLast() == away)
+                    .count();
+
+            if (count != 0) {
+                return gameId;
+            }
+        }
+
+        return null;
     }
 }
