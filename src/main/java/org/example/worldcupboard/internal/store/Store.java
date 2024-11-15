@@ -38,4 +38,9 @@ public class Store {
 
         return null;
     }
+
+    public Map<GameId, List<Event>> getAll() {
+        return store; // it's not safe
+    }
+
 }
