@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ComponentTest {
     private final Operations operations = OperationsFactory.operationsInMemory();
 
-    @Disabled
     @Test
     void shouldCreateGameAndShowOnScoreBoard() {
         // given

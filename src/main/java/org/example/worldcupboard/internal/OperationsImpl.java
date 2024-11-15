@@ -8,13 +8,16 @@ import org.example.worldcupboard.api.model.results.FinishResult;
 import org.example.worldcupboard.api.model.results.Summary;
 import org.example.worldcupboard.api.model.results.UpdateResult;
 import org.example.worldcupboard.internal.commands.CommandService;
+import org.example.worldcupboard.internal.queries.QueryService;
 
 public class OperationsImpl implements Operations {
 
     private final CommandService commandService;
+    private final QueryService queryService;
 
-    public OperationsImpl(CommandService commandService) {
+    public OperationsImpl(CommandService commandService, QueryService queryService) {
         this.commandService = commandService;
+        this.queryService = queryService;
     }
 
     @Override
@@ -34,6 +37,6 @@ public class OperationsImpl implements Operations {
 
     @Override
     public Summary getSummary() {
-        return null;
+        return queryService.getSummary();
     }
 }

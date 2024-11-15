@@ -3,6 +3,7 @@ package org.example.worldcupboard.api;
 import org.example.worldcupboard.internal.OperationsImpl;
 import org.example.worldcupboard.internal.commands.CommandService;
 import org.example.worldcupboard.internal.commands.GameIdGenerator;
+import org.example.worldcupboard.internal.queries.QueryService;
 import org.example.worldcupboard.internal.store.Store;
 import org.example.worldcupboard.internal.commands.TimeProvider;
 
@@ -15,7 +16,9 @@ public abstract class OperationsFactory {
         var store = storeBasedOnHashMap();
         var commandService =  commandService(store);
 
-        return new OperationsImpl(commandService);
+        var queryService = queryService(store);
+
+        return new OperationsImpl(commandService, queryService);
     }
 
     private static Store storeBasedOnHashMap() {
@@ -27,5 +30,9 @@ public abstract class OperationsFactory {
         TimeProvider timeProvider = () -> Clock.systemDefaultZone().instant();
 
         return new CommandService(store, gameIdGenerator, timeProvider);
+    }
+
+    private static QueryService queryService(Store store) {
+        return new QueryService(store);
     }
 }
