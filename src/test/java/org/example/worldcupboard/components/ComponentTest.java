@@ -29,7 +29,6 @@ public class ComponentTest {
         assertInitialState(gameId, teamA, teamB);
     }
 
-    @Disabled
     @Test
     void shouldCreateGameAndUpdateScoreAndShowOnScoreBoard() {
         // given

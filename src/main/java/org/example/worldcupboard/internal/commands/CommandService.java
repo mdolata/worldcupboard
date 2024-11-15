@@ -1,7 +1,9 @@
 package org.example.worldcupboard.internal.commands;
 
+import org.example.worldcupboard.api.model.GameId;
 import org.example.worldcupboard.api.model.Team;
 import org.example.worldcupboard.api.model.results.CreateResult;
+import org.example.worldcupboard.api.model.results.UpdateResult;
 import org.example.worldcupboard.internal.store.Event;
 import org.example.worldcupboard.internal.store.EventType;
 import org.example.worldcupboard.internal.store.Store;
@@ -33,6 +35,18 @@ public class CommandService {
         store.add(gameId, creationEvent);
 
         return new CreateResult(true, gameId);
+    }
+
+    public UpdateResult update(GameId gameId, Team team) {
+        var existingGameId = store.verifyGameExists(gameId);
+        if (existingGameId == null) {
+            return new UpdateResult(false);
+        }
+
+        var event = Event.updateEvent(team, timeProvider.now());
+        store.add(gameId, event);
+
+        return new UpdateResult(true);
     }
 
 }

@@ -58,6 +58,30 @@ class QueryServiceTest {
         assertThat(summary.summaryList()).containsExactly(new Score(gameId, teamA, 0, teamB, 0));
     }
 
+    @Test
+    public void shouldReturnSummaryForMatchWithMultipleUpdates() {
+        // given
+        GameId gameId = new GameId(UUID.randomUUID());
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        when(store.getAll()).thenReturn(Map.of(
+                        gameId,
+                        List.of(
+                                Event.createEvent(List.of(teamA, teamB), instant),
+                                Event.updateEvent(teamA, instant),
+                                Event.updateEvent(teamB, instant),
+                                Event.updateEvent(teamA, instant)
+                        )
+                )
+        );
+
+        // when
+        Summary summary = queryService.getSummary();
+
+        // then
+        assertThat(summary.summaryList()).containsExactly(new Score(gameId, teamA, 2, teamB, 1));
+    }
+
     @Disabled
     @Test
     public void shouldReturnSummaryInOrderByTotalScore() {

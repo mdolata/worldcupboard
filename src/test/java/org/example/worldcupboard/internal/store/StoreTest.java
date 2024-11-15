@@ -58,7 +58,7 @@ class StoreTest {
     }
 
     @Test
-    void shouldVerifyGameExists() {
+    void shouldVerifyGameExistsBasedOnTeamNames() {
         // given
         var gameId = new GameId(UUID.randomUUID());
         Team home = new Team("home");
@@ -140,6 +140,34 @@ class StoreTest {
 
         // then
         assertThat(result).isEqualTo(null);
+    }
+
+    @Test
+    void shouldVerifyGameExistsBasedOnGameId() {
+        // given
+        var gameId = new GameId(UUID.randomUUID());
+
+        var event1 = new Event(CREATE, List.of(new Team("home"), new Team("away")), instant);
+        db.put(gameId, List.of(event1));
+
+        // when
+        var result = store.verifyGameExists(gameId);
+
+        // then
+        assertThat(result).isEqualTo(gameId);
+    }
+
+    @Test
+    void shouldVerifyGameDoesNotExistsBasedOnGameId() {
+        // given
+        var event1 = new Event(CREATE, List.of(new Team("home"), new Team("away")), instant);
+        db.put(new GameId(UUID.randomUUID()), List.of(event1));
+
+        // when
+        var result = store.verifyGameExists(new GameId(UUID.randomUUID()));
+
+        // then
+        assertThat(result).isNull();
     }
 
 }

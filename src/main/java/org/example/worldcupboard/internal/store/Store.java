@@ -22,6 +22,10 @@ public class Store {
         return true;
     }
 
+    public GameId verifyGameExists(GameId gameId) {
+        return (store.containsKey(gameId)) ? gameId : null;
+    }
+
     public GameId verifyGameExists(Team home, Team away) {
         for (Map.Entry<GameId, List<Event>> entry : store.entrySet()) {
             GameId gameId = entry.getKey();

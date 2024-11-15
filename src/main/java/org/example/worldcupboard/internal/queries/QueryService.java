@@ -21,23 +21,28 @@ public class QueryService {
         return new Summary(store.getAll()
                 .entrySet()
                 .stream()
-                .map(this::calculateScore)
+                .map(value -> calculateScore(value.getKey(), value.getValue()))
                 .toList());
     }
 
-    private Score calculateScore(Map.Entry<GameId, List<Event>> value) {
-        var gameId = value.getKey();
+    private Score calculateScore(GameId gameId, List<Event> events) {
         var homeCounter = 0;
         var awayCounter = 0;
         Team home = null;
         Team away = null;
-        for(Event e : value.getValue()) {
+        for (Event e : events) {
             switch (e.eventTyp()) {
                 case CREATE -> {
                     home = e.teamsInvolved().getFirst();
                     away = e.teamsInvolved().getLast();
                 }
-                case UPDATE -> throw new UnsupportedOperationException();
+                case UPDATE -> {
+                    if (e.teamsInvolved().getFirst().equals(home)) {
+                        homeCounter++;
+                    } else {
+                        awayCounter++;
+                    }
+                }
             }
         }
         return new Score(gameId, home, homeCounter, away, awayCounter);

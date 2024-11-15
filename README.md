@@ -54,3 +54,4 @@ This is a simple library to collect and return data about sport event.
 5. I assume events can be sent in the wrong order, it should not be a problem for summary queries
 6. I decided to use UUID as game ids because it's a standard. Simpler version could be a simple string concatenation of team's names.
 7. I intentionally don't put logs, as it's supposed to be a simple library
+8. Assumed that updating not existing match is an error. But it's easy to change to initialize match if needed.

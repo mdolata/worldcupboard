@@ -32,7 +32,7 @@ public class OperationsImpl implements Operations {
 
     @Override
     public UpdateResult updateGame(GameId gameId, Team team) {
-        return null;
+        return commandService.update(gameId, team);
     }
 
     @Override
