@@ -82,27 +82,28 @@ class QueryServiceTest {
         assertThat(summary.summaryList()).containsExactly(new Score(gameId, teamA, 2, teamB, 1));
     }
 
-    @Disabled
     @Test
     public void shouldReturnSummaryInOrderByTotalScore() {
-
-    }
-
-    @Disabled
-    @Test
-    public void shouldReturnSummaryInOrderFor2StartedMatchesWithTheSameScore() {
         // given
         GameId gameId1 = new GameId(UUID.randomUUID());
-        GameId gameId2 = new GameId(UUID.randomUUID());
         Team teamA = new Team("teamA");
         Team teamB = new Team("teamB");
+        GameId gameId2 = new GameId(UUID.randomUUID());
         Team teamC = new Team("teamC");
         Team teamD = new Team("teamD");
+        GameId gameId3 = new GameId(UUID.randomUUID());
+        Team teamX = new Team("teamX");
+        Team teamZ = new Team("teamZ");
         when(store.getAll()).thenReturn(Map.of(
                         gameId1,
                         List.of(Event.createEvent(List.of(teamA, teamB), instant)),
                         gameId2,
-                        List.of(Event.createEvent(List.of(teamC, teamD), instant.plus(1L, ChronoUnit.MINUTES)))
+                        List.of(Event.createEvent(List.of(teamC, teamD), instant.plus(1L, ChronoUnit.MINUTES)),
+                                Event.updateEvent(teamC, instant),
+                                Event.updateEvent(teamC, instant)),
+                        gameId3,
+                        List.of(Event.createEvent(List.of(teamX, teamZ), instant),
+                                Event.updateEvent(teamZ, instant))
                 )
         );
 
@@ -111,8 +112,46 @@ class QueryServiceTest {
 
         // then
         assertThat(summary.summaryList()).containsExactly(
-                new Score(gameId1, teamA, 0, teamB, 0),
-                new Score(gameId2, teamC, 0, teamD, 0)
+                new Score(gameId2, teamC, 2, teamD, 1),
+                new Score(gameId3, teamX, 0, teamZ, 1),
+                new Score(gameId1, teamA, 0, teamB, 0)
+        );
+    }
+
+
+    @Test
+    public void shouldReturnSummaryInOrderByTotalScoreAndByTime() {
+        // given
+        GameId gameId1 = new GameId(UUID.randomUUID());
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        GameId gameId2 = new GameId(UUID.randomUUID());
+        Team teamC = new Team("teamC");
+        Team teamD = new Team("teamD");
+        GameId gameId3 = new GameId(UUID.randomUUID());
+        Team teamX = new Team("teamX");
+        Team teamZ = new Team("teamZ");
+        when(store.getAll()).thenReturn(Map.of(
+                        gameId1,
+                        List.of(Event.createEvent(List.of(teamA, teamB), instant),
+                                Event.updateEvent(teamA, instant)),
+                        gameId2,
+                        List.of(Event.createEvent(List.of(teamC, teamD), instant.plus(5L, ChronoUnit.MINUTES)),
+                                Event.updateEvent(teamC, instant)),
+                        gameId3,
+                        List.of(Event.createEvent(List.of(teamX, teamZ), instant.plus(1L, ChronoUnit.MINUTES)),
+                                Event.updateEvent(teamX, instant))
+                )
+        );
+
+        // when
+        Summary summary = queryService.getSummary();
+
+        // then
+        assertThat(summary.summaryList()).containsExactly(
+                new Score(gameId2, teamC, 1, teamD, 0),
+                new Score(gameId3, teamX, 1, teamZ, 0),
+                new Score(gameId1, teamA, 1, teamB, 0)
         );
     }
 }
