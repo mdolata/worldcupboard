@@ -1,6 +1,11 @@
 # worldcupboard
 This is a simple library to collect and return data about sport event.
 
+# How to use it
+Simply import `OperationsFactory` class and invoke `operationsInMemory` method. 
+The factory will compose the library with available classes and returns object that implements `Operations` interface.
+Everything what is in the `org.example.worldcupboard.api` package is for wide usage and should not be change with any breaks
+
 # Key requirements
 - keep it simple
 - in-memory store
