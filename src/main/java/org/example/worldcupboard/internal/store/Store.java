@@ -13,8 +13,8 @@ public class Store {
         this.store = store;
     }
 
-    public void add(GameId gameId, Event event) {
-
+    public boolean add(GameId gameId, Event event) {
+        return false;
     }
 
 
