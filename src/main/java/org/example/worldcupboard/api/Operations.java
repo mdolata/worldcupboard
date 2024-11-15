@@ -12,7 +12,7 @@ public interface Operations {
 
     FinishResult finishGame(GameId gameId);
 
-    UpdateResult updateGame(GameId gameId, Score score);
+    UpdateResult updateGame(GameId gameId, Team team);
 
     Summary getSummary();
 

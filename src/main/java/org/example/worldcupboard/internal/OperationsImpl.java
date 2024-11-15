@@ -2,7 +2,6 @@ package org.example.worldcupboard.internal;
 
 import org.example.worldcupboard.api.Operations;
 import org.example.worldcupboard.api.model.GameId;
-import org.example.worldcupboard.api.model.Score;
 import org.example.worldcupboard.api.model.Team;
 import org.example.worldcupboard.api.model.results.CreateResult;
 import org.example.worldcupboard.api.model.results.FinishResult;
@@ -29,7 +28,7 @@ public class OperationsImpl implements Operations {
     }
 
     @Override
-    public UpdateResult updateGame(GameId gameId, Score score) {
+    public UpdateResult updateGame(GameId gameId, Team team) {
         return null;
     }
 
