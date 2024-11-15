@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.example.worldcupboard.internal.store.EventType.CREATE;
 
 class StoreTest {
 
@@ -26,7 +25,11 @@ class StoreTest {
     void shouldAddEvent(EventType eventType) {
         // given
         var gameId = new GameId(UUID.randomUUID());
-        var event = new Event(eventType, List.of(new Team("team")), instant);
+
+        var event = switch (eventType) {
+            case CREATE -> Event.createEvent(List.of(new Team("team1"), new Team("team2")), instant);
+            case UPDATE -> Event.updateEvent(new Team("team"), instant);
+        };
 
         // when
         var result = store.add(gameId, event);
@@ -40,7 +43,7 @@ class StoreTest {
     void shouldAddAnotherEventForTheGame() {
         // given
         var gameId = new GameId(UUID.randomUUID());
-        var event = new Event(CREATE, List.of(new Team("team")), instant);
+        var event = Event.createEvent(List.of(new Team("team1"), new Team("team2")), instant);
 
         // when
         var result1 = store.add(gameId, event);
@@ -64,7 +67,7 @@ class StoreTest {
         Team home = new Team("home");
         Team away = new Team("away");
 
-        var event1 = new Event(CREATE, List.of(home, away), instant);
+        var event1 = Event.createEvent(List.of(home, away), instant);
         db.put(gameId, List.of(event1));
 
         // when
@@ -81,7 +84,7 @@ class StoreTest {
         Team home = new Team("home");
         Team away = new Team("away");
 
-        var event1 = new Event(CREATE, List.of(home, away), instant);
+        var event1 = Event.createEvent(List.of(home, away), instant);
         db.put(gameId, List.of(event1));
 
         // when
@@ -98,7 +101,7 @@ class StoreTest {
         Team home = new Team("home");
         Team away = new Team("away");
 
-        var event1 = new Event(CREATE, List.of(home, away), instant);
+        var event1 = Event.createEvent(List.of(home, away), instant);
         db.put(gameId, List.of(event1));
 
         // when
@@ -115,7 +118,7 @@ class StoreTest {
         Team home = new Team("home");
         Team away = new Team("away");
 
-        var event1 = new Event(CREATE, List.of(home, away), instant);
+        var event1 = Event.createEvent(List.of(home, away), instant);
         db.put(gameId, List.of(event1));
 
         // when
@@ -132,7 +135,7 @@ class StoreTest {
         Team home = new Team("home");
         Team away = new Team("away");
 
-        var event1 = new Event(CREATE, List.of(home, away), instant);
+        var event1 = Event.createEvent(List.of(home, away), instant);
         db.put(gameId, List.of(event1));
 
         // when
@@ -147,7 +150,7 @@ class StoreTest {
         // given
         var gameId = new GameId(UUID.randomUUID());
 
-        var event1 = new Event(CREATE, List.of(new Team("home"), new Team("away")), instant);
+        var event1 = Event.createEvent(List.of(new Team("home"), new Team("away")), instant);
         db.put(gameId, List.of(event1));
 
         // when
@@ -160,7 +163,7 @@ class StoreTest {
     @Test
     void shouldVerifyGameDoesNotExistsBasedOnGameId() {
         // given
-        var event1 = new Event(CREATE, List.of(new Team("home"), new Team("away")), instant);
+        var event1 = Event.createEvent(List.of(new Team("home"), new Team("away")), instant);
         db.put(new GameId(UUID.randomUUID()), List.of(event1));
 
         // when

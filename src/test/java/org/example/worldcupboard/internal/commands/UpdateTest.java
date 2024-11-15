@@ -8,11 +8,9 @@ import org.example.worldcupboard.internal.store.Event;
 import org.example.worldcupboard.internal.store.Store;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.example.worldcupboard.internal.store.EventType.UPDATE;
 import static org.mockito.Mockito.*;
 
 public class UpdateTest {
@@ -34,7 +32,7 @@ public class UpdateTest {
 
         // then
         verify(store).verifyGameExists(gameId);
-        verify(store).add(gameId, new Event(UPDATE, List.of(team), timeProvider.now()));
+        verify(store).add(gameId, Event.updateEvent(team, timeProvider.now()));
 
         UpdateResult expected = new UpdateResult(true);
         assertThat(result).isEqualTo(expected);

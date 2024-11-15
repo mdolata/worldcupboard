@@ -6,9 +6,7 @@ import org.example.worldcupboard.api.model.results.CreateResult;
 import org.example.worldcupboard.api.model.results.FinishResult;
 import org.example.worldcupboard.api.model.results.UpdateResult;
 import org.example.worldcupboard.internal.queries.EventReducer;
-import org.example.worldcupboard.internal.queries.QueryService;
 import org.example.worldcupboard.internal.store.Event;
-import org.example.worldcupboard.internal.store.EventType;
 import org.example.worldcupboard.internal.store.Store;
 
 import java.util.List;
@@ -34,7 +32,7 @@ public class CommandService {
         var gameId = gameIdGenerator.generate();
         var time = timeProvider.now();
 
-        var creationEvent = new Event(EventType.CREATE, List.of(home, away), time);
+        var creationEvent = Event.createEvent(List.of(home, away), time);
         store.add(gameId, creationEvent);
 
         return new CreateResult(true, gameId);
