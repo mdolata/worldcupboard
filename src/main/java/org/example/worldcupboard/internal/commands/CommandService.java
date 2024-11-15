@@ -29,8 +29,7 @@ public class CommandService {
 
         var eventForHomeTeam = new Event(EventType.CREATE, home, time);
         var eventForAwayTeam = new Event(EventType.CREATE, away, time);
-        store.add(gameId, eventForHomeTeam);
-        store.add(gameId, eventForAwayTeam);
+        store.add(gameId, eventForHomeTeam, eventForAwayTeam);
 
         return new CreateResult(true, gameId);
     }

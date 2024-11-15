@@ -66,7 +66,7 @@ class StoreTest {
 
         var event1 = new Event(CREATE, home, instant);
         var event2 = new Event(CREATE, away, instant);
-        db.put(gameId, List.of(event1, event2));
+        store.add(gameId, event1, event2);
 
         // when
         var result = store.verifyGameExists(home, away);
@@ -84,7 +84,7 @@ class StoreTest {
 
         var event1 = new Event(CREATE, home, instant);
         var event2 = new Event(CREATE, away, instant);
-        db.put(gameId, List.of(event1, event2));
+        store.add(gameId, event1, event2);
 
         // when
         var result = store.verifyGameExists(new Team("anotherHome"), new Team("anotherAway"));
@@ -102,7 +102,7 @@ class StoreTest {
 
         var event1 = new Event(CREATE, home, instant);
         var event2 = new Event(CREATE, away, instant);
-        db.put(gameId, List.of(event1, event2));
+        store.add(gameId, event1, event2);
 
         // when
         var result = store.verifyGameExists(new Team("anotherHome"), away);
@@ -120,7 +120,7 @@ class StoreTest {
 
         var event1 = new Event(CREATE, home, instant);
         var event2 = new Event(CREATE, away, instant);
-        db.put(gameId, List.of(event1, event2));
+        store.add(gameId, event1, event2);
 
         // when
         var result = store.verifyGameExists(home, new Team("anotherAway"));
@@ -138,7 +138,7 @@ class StoreTest {
 
         var event1 = new Event(CREATE, home, instant);
         var event2 = new Event(CREATE, away, instant);
-        db.put(gameId, List.of(event1, event2));
+        store.add(gameId, event1, event2);
 
         // when
         var result = store.verifyGameExists(away, home);
